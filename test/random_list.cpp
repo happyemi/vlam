@@ -80,4 +80,34 @@ BOOST_AUTO_TEST_CASE(test_can_have_list_in_text)
 	BOOST_REQUIRE_EQUAL(target.str(), "Hello second world");
 }
 
+BOOST_AUTO_TEST_CASE(test_can_nest_empty_lists)
+{
+	std::string text = "{{}}";
+	std::stringstream in(text), target;
+	fake_rng->value = 0;
+	Parser parser(in, target, fake_rng);
+	parser.parse();
+	BOOST_REQUIRE_EQUAL(target.str(), "");
+}
+
+BOOST_AUTO_TEST_CASE(test_can_nest_lists)
+{
+	std::string text = "Hello {first|{second|third}} world";
+	std::stringstream in(text), target;
+	fake_rng->value = 1;
+	Parser parser(in, target, fake_rng);
+	parser.parse();
+	BOOST_REQUIRE_EQUAL(target.str(), "Hello third world");
+}
+
+BOOST_AUTO_TEST_CASE(test_can_nest_lists_concatenated_to_text)
+{
+	std::string text = "Hello {first|my {second|third} lovely} world";
+	std::stringstream in(text), target;
+	fake_rng->value = 1;
+	Parser parser(in, target, fake_rng);
+	parser.parse();
+	BOOST_REQUIRE_EQUAL(target.str(), "Hello my third lovely world");
+}
+
 BOOST_AUTO_TEST_SUITE_END()

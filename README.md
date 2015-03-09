@@ -8,14 +8,23 @@ LVAM is supposed to be a library, but it also comes with a command line tool, ca
 
 1. English characters and some ASCII symbols are just copied to the output stream. So the simpler input text you can have is "Hello world!", which gets copied as is to the output stream
 
-2. Curly brackets are used to implement _Random Lists_ i.e. a list of elements separated by a `|`. Only one element will be selected by the parser and copied to the output.
-Example: `The {first|second} world` can result in:
+2. Curly brackets are used to implement _Random Lists_ i.e. a list of elements separated by a `|`. Only one element will be selected by the parser and copied to the output. Example: 
+
+  `The {first|second} world` can result in:
 
   1. `The first world` or
 
   2. `The second world`
 
-Random Lists can't be nested (for now)
+ _Random Lists_ can be nested. For example, the following text:
+
+ `Hello {first|my {second|third} lovely} world`can result in:
+
+  1. `Hello first world` or
+
+  2. `Hello my second lovely world` or
+  
+  3. `Hello my third lovely world`
 
 ### Building
 Building the commandline program requires flexc++ and bisonc++ installed. Building tests requires libboost-test.

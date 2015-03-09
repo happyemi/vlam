@@ -22,24 +22,25 @@
              VCT_STR: std::shared_ptr<std::vector<std::string>>
 
 %type <STRING> text
-%type <STRING> list
+%type <STRING> concatenated_text
 %type <VCT_STR> element_list
 
 %token TEXT
 
 %%
 
-output:                                 {}
-         | output text                  { out << $2; };
+output:                                               {}
+         | output text                                { out << $2; };
 
-text:
-         TEXT                           { $$ = d_scanner.matched(); }
-         | list                         { $$ = $1; };
+text:                                   
+         TEXT                                         { $$ = d_scanner.matched(); }
+         | '{' element_list '}'                       { $$ = Util::get_random_element(*$2, rng); };
 
-list:
-         '{' element_list '}'           { $$ = Util::get_random_element(*$2, rng); };
+concatenated_text: 
+		 text                                         { $$ = $1; }
+		 | concatenated_text text                     { $$ = $1 + $2; };
 
-element_list:                           { $$ = std::make_shared<std::vector<std::string>>(); $$->push_back(""); }
-         | TEXT                         { $$ = std::make_shared<std::vector<std::string>>(); $$->push_back(d_scanner.matched()); }
-         | element_list '|' TEXT        { $1->push_back(d_scanner.matched()); $$ = $1; };
+element_list:                                         { $$ = std::make_shared<std::vector<std::string>>(); }
+         | concatenated_text                          { $$ = std::make_shared<std::vector<std::string>>(); $$->push_back($1); }
+         | element_list '|' concatenated_text         { $1->push_back($3); $$ = $1; };
 
