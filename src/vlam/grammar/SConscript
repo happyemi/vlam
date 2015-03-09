@@ -1,0 +1,43 @@
+#     Copyright 2014-2015 Emiliano Mennucci
+#
+#     This file is part of VLAM.
+# 
+#     VLAM is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+# 
+#     VLAM is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+# 
+#     You should have received a copy of the GNU General Public License
+#     along with VLAM.  If not, see <http://www.gnu.org/licenses/>.
+
+import os
+
+Import('env')
+
+def parser_emitter(target, source, env):
+	target.append("Parserbase.h")
+	return target, source
+
+def scanner_emitter(target, source, env):
+	target.append("Scannerbase.h")
+	target.append("Scanner.h")
+	return target, source
+
+scanner_builder = Builder(action = 'flexc++ -l ${TARGET.file} ${SOURCE.file}', suffix='.cpp', emitter = scanner_emitter, chdir = 1)
+parser_builder = Builder(action = 'bisonc++ -p ${TARGET.file} ${SOURCE.file}', suffix='.cpp', emitter = parser_emitter, chdir = 1)
+env = Environment(BUILDERS = {'Scanner': scanner_builder, 'Parser': parser_builder})
+
+env.Append(CPPFLAGS = ['-Wall', '-g', '-std=c++11'])
+
+scanner_files = env.Scanner('scanner.ll')
+parser_files  = env.Parser('parser.y')
+
+grammar = [scanner_files[0], parser_files[0]]
+
+Return('grammar')
+
