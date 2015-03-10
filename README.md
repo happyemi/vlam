@@ -1,7 +1,7 @@
 ### Overview
-LVAM stands for "Very Large Array of Monkeys". It's a library that can be used to generate sensible random text, in the same way as monkeys would do (provided they can hit the keyboard for enough time...). It has NOT any claim to be a formal grammar, it's just a tool can be useful if you want to add some randomness to your text.
+VLAM stands for "Very Large Array of Monkeys". It's a library that can be used to generate sensible random text, in the same way as monkeys would do (provided they can hit the keyboard for enough time...). It has NOT any claim to be a formal grammar, it's just a tool can be useful if you want to add some randomness to your text.
 
-LVAM is supposed to be a library, but it also comes with a command line tool, called vlam_parse that can be used to have some fun from the command line. It reads text from the standard input until EOF is reached, and writes its output on the standard output.
+VLAM is supposed to be a library, but it also comes with a command line tool, called `vlam_parse` that can be used to have some fun from the command line. It reads text from the standard input until EOF is reached, and writes its output on the standard output.
 
 ### Manual
 (WIP, I'm adding things here as soon as I implement them)
@@ -25,6 +25,42 @@ LVAM is supposed to be a library, but it also comes with a command line tool, ca
   2. `Hello my second lovely world` or
   
   3. `Hello my third lovely world`
+
+  Please note that these three alternative do NOT have the same chance to be selected. `{second|third}` have both a 50% chance to be selected. The parent _Random List_ will then select either branch with 50% chance each. This means that `Hello first world` has 50% probability to be generated, while `Hello my second lovely world` and `Hello my third lovely world` have 25% probability each to be generated.
+
+3. Square brackets are used to generate _Optional Text_. The text between a pair of brackets has a 50% chance to be generated. For example:
+
+  `Hello[ world]`
+
+  can result in:
+
+  1. `Hello world` or
+  
+  2. `Hello`
+
+4. _Optional Text_ and _Random Lists_ can be nested without problems. All the following possibilites are valid:
+  
+  * `Hello {[my ]first|second} world`. It can generate:
+    
+     1. `Hello first world` or
+	
+     2. `Hello my first world` or
+	
+     3. `Hello second world`
+
+     Note that #3 has 50% chance to be generated. #1 and #2 have 25% chance each.
+
+  * `Hello [{first|second}] world`. It can generate:
+
+     1. `Hello world` or
+
+     2. `Hello first world` or
+
+     3. `Hello second world`
+
+     Note that #1 has 50% chance to to be generated. #2 and #3 have 25% chance each.
+  
+ There is no limit to nesting, but the probability of the generation of the text will lower with each nesting level.
 
 ### Building
 Building the commandline program requires flexc++ and bisonc++ installed. Building tests requires libboost-test.

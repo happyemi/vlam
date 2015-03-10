@@ -34,13 +34,13 @@ output:                                               {}
 
 text:                                   
          TEXT                                         { $$ = d_scanner.matched(); }
-         | '{' element_list '}'                       { $$ = Util::get_random_element(*$2, rng); };
+         | '{' element_list '}'                       { $$ = Util::get_random_element(*$2, rng); }
+         | '[' concatenated_text ']'                  { $$ = rng->get_uint(0, 1) ? $2 : ""; };
 
-concatenated_text: 
-		 text                                         { $$ = $1; }
-		 | concatenated_text text                     { $$ = $1 + $2; };
-
-element_list:                                         { $$ = std::make_shared<std::vector<std::string>>(); }
-         | concatenated_text                          { $$ = std::make_shared<std::vector<std::string>>(); $$->push_back($1); }
+element_list:
+         concatenated_text                            { $$ = std::make_shared<std::vector<std::string>>(); $$->push_back($1); }
          | element_list '|' concatenated_text         { $1->push_back($3); $$ = $1; };
+
+concatenated_text:                                    { $$ = ""; }
+         | concatenated_text text                     { $$ = $1 + $2; };
 

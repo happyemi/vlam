@@ -20,7 +20,7 @@
 
 %%
 
-[{}|]                        return matched()[0];
+[\[\]{}|]                    return matched()[0];
 
 \n |
 [()a-zA-Z0-9 ,.;:'?!"]*      return Parser::TEXT;
