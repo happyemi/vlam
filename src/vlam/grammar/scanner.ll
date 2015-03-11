@@ -18,11 +18,18 @@
  *
  */
 
+%x content
+
 %%
 
-[\[\]{}|]                    return matched()[0];
+\=                                     return matched()[0];
+\<                                     begin(StartCondition__::content); return matched()[0];
+[\n \t]
+.                                      return Parser::TEXT;
 
-\n |
-[()a-zA-Z0-9 ,.;:'?!"]*      return Parser::TEXT;
-.
-<<EOF>>                      return 0;
+<content>[\[\]{}|]                     return matched()[0];
+<content>\>                            begin(StartCondition__::INITIAL); return matched()[0];
+<*>\$[a-zA-Z0-9]*                      return Parser::IDENTIFIER;
+<content>[\n()a-zA-Z0-9 ,.;:'?!"]*     return Parser::TEXT;
+<content>.
+<<EOF>>                                return 0;

@@ -62,6 +62,16 @@ VLAM is supposed to be a library, but it also comes with a command line tool, ca
   
  There is no limit to nesting, but the probability of the generation of the text will lower with each nesting level.
 
+5. _Variables_ are identifiers that store text and that, when used, are replaced by their content. Only _Variables_ that have been previously defined can be used. Example:
+  ```
+  $myVar = <This is a variable>
+  <Variable text: $myVar>
+  ```
+
+  The previous text will generete: `Variable text: This is a variable`
+
+  Note that all _Optional Text_ and _Random Lists_ that appear in a variable definition are only generate once and their value is reused every time the variable is referred
+
 ### Building
 Building the commandline program requires flexc++ and bisonc++ installed. Building tests requires libboost-test.
 

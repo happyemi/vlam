@@ -22,18 +22,25 @@
              VCT_STR: std::shared_ptr<std::vector<std::string>>
 
 %type <STRING> text
+%type <STRING> identifier
 %type <STRING> concatenated_text
 %type <VCT_STR> element_list
 
 %token TEXT
+%token IDENTIFIER
 
 %%
 
 output:                                               {}
-         | output text                                { out << $2; };
+         | output definition                          { auto main = variables.find(""); if(main != variables.end()) out << main->second; };
+
+definition:
+         '<' concatenated_text '>'                    { variables[""] = $2; }
+         | identifier '=' '<' concatenated_text '>'   { variables[$1] = $4; };
 
 text:                                   
          TEXT                                         { $$ = d_scanner.matched(); }
+         | identifier                                 { $$ = variables[$1]; }
          | '{' element_list '}'                       { $$ = Util::get_random_element(*$2, rng); }
          | '[' concatenated_text ']'                  { $$ = rng->get_uint(0, 1) ? $2 : ""; };
 
@@ -43,4 +50,7 @@ element_list:
 
 concatenated_text:                                    { $$ = ""; }
          | concatenated_text text                     { $$ = $1 + $2; };
+
+identifier:
+         IDENTIFIER                                   { auto m = d_scanner.matched(); ($$).assign(m.begin() + 1, m.end()); };
 

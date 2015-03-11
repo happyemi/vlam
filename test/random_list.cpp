@@ -36,7 +36,7 @@ BOOST_FIXTURE_TEST_SUITE(random_list, RandomListFixture)
 
 BOOST_AUTO_TEST_CASE(test_empty_list)
 {
-	std::string text = "{}";
+	std::string text = "<{}>";
 	std::stringstream in(text), target;
 	Vlam::parse(in, target);
 	BOOST_REQUIRE_EQUAL(target.str(), "");
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(test_empty_list)
 
 BOOST_AUTO_TEST_CASE(test_list_with_one_element)
 {
-	std::string text = "{test}";
+	std::string text = "<{test}>";
 	std::stringstream in(text), target;
 	Vlam::parse(in, target);
 	BOOST_REQUIRE_EQUAL(target.str(), "test");
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(test_list_with_one_element)
 
 BOOST_AUTO_TEST_CASE(test_list_with_two_elements_can_select_first_element)
 {
-	std::string text = "{first|second}";
+	std::string text = "<{first|second}>";
 	std::stringstream in(text), target;
 	fake_rng->value = 0;
 	Parser parser(in, target, fake_rng);
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(test_list_with_two_elements_can_select_first_element)
 
 BOOST_AUTO_TEST_CASE(test_list_with_two_elements_can_select_second_element)
 {
-	std::string text = "{first|second}";
+	std::string text = "<{first|second}>";
 	std::stringstream in(text), target;
 	fake_rng->value = 1;
 	Parser parser(in, target, fake_rng);
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(test_list_with_two_elements_can_select_second_element)
 
 BOOST_AUTO_TEST_CASE(test_can_have_list_in_text)
 {
-	std::string text = "Hello {first|second} world";
+	std::string text = "<Hello {first|second} world>";
 	std::stringstream in(text), target;
 	fake_rng->value = 1;
 	Parser parser(in, target, fake_rng);
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(test_can_have_list_in_text)
 
 BOOST_AUTO_TEST_CASE(test_can_nest_empty_lists)
 {
-	std::string text = "{{}}";
+	std::string text = "<{{}}>";
 	std::stringstream in(text), target;
 	fake_rng->value = 0;
 	Parser parser(in, target, fake_rng);
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(test_can_nest_empty_lists)
 
 BOOST_AUTO_TEST_CASE(test_can_nest_lists)
 {
-	std::string text = "Hello {first|{second|third}} world";
+	std::string text = "<Hello {first|{second|third}} world>";
 	std::stringstream in(text), target;
 	fake_rng->value = 1;
 	Parser parser(in, target, fake_rng);
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(test_can_nest_lists)
 
 BOOST_AUTO_TEST_CASE(test_can_nest_lists_concatenated_to_text)
 {
-	std::string text = "Hello {first|my {second|third} lovely} world";
+	std::string text = "<Hello {first|my {second|third} lovely} world>";
 	std::stringstream in(text), target;
 	fake_rng->value = 1;
 	Parser parser(in, target, fake_rng);
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(test_can_nest_lists_concatenated_to_text)
 
 BOOST_AUTO_TEST_CASE(test_can_nest_optional_text)
 {
-	std::string text = "Hello {first|my [second]} world";
+	std::string text = "<Hello {first|my [second]} world>";
 	std::stringstream in(text), target;
 	fake_rng->value = 1;
 	Parser parser(in, target, fake_rng);

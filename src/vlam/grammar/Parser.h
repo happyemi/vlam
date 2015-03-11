@@ -25,6 +25,7 @@
 #include "Scanner.h"
 #include <vlam/util/random.h>
 #include <sstream>
+#include <map>
 
 #undef Parser
 class Parser: public ParserBase
@@ -36,6 +37,7 @@ public:
 	int parse();
 
 private:
+	std::map<std::string, std::string> variables;
 	std::ostringstream scanner_output;
 	Util::RNG::Ptr rng;
 	Scanner d_scanner;

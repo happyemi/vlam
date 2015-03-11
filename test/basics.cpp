@@ -25,18 +25,18 @@ BOOST_AUTO_TEST_SUITE(basics)
 
 BOOST_AUTO_TEST_CASE(test_basic_copy)
 {
-	std::string text = "This is some basic text";
+	std::string text = "<This is some basic text>";
 	std::stringstream in(text), target;
 	Vlam::parse(in, target);
-	BOOST_REQUIRE_EQUAL(target.str(), text);
+	BOOST_REQUIRE_EQUAL(target.str(), "This is some basic text");
 }
 
 BOOST_AUTO_TEST_CASE(test_can_copy_newline)
 {
-	std::string text = "This is some basic text\nAnd another line";
+	std::string text = "<This is some basic text\nAnd another line>";
 	std::stringstream in(text), target;
 	Vlam::parse(in, target);
-	BOOST_REQUIRE_EQUAL(target.str(), text);
+	BOOST_REQUIRE_EQUAL(target.str(), "This is some basic text\nAnd another line");
 }
 
 BOOST_AUTO_TEST_CASE(test_can_copy_empty_text)
