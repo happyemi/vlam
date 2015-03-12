@@ -25,4 +25,9 @@ env.Append(CPPFLAGS = ['-Wall', '-Werror', '-g', '-std=c++11'])
 libvlam = SConscript(os.path.join('src', 'SConscript'), exports = 'env')
 SConscript(os.path.join('test', 'SConscript'), exports = 'env libvlam')
 
+# Alias for copying include and lib files
+dest_dir = [os.path.join("install", "libvlam.a"), os.path.join("install", "vlam", "vlam.h")]
+src_dir = [libvlam, os.path.join("src", "vlam", "vlam.h")]
+env.Alias('lib', env.InstallAs(["install/libvlam.a", "install/vlam/vlam.h"], [libvlam, "src/vlam/vlam.h"]))
+
 Default('vlam_parse')

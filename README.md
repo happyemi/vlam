@@ -79,3 +79,5 @@ Building the commandline program requires flexc++ and bisonc++ installed. Buildi
 
 2. `scons test` builds the unit tests. Run with `test/vlam-test`
 
+3. `scons install` will copy the library files into the `install` directory, located in the source root.
+
