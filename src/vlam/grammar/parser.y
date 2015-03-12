@@ -31,16 +31,16 @@
 
 %%
 
-output:                                               {}
-         | output definition                          { auto main = variables.find(""); if(main != variables.end()) out << main->second; };
+output:
+         | output definition;
 
 definition:
-         '<' concatenated_text '>'                    { variables[""] = $2; }
-         | identifier '=' '<' concatenated_text '>'   { variables[$1] = $4; };
+         '<' concatenated_text '>'                    { result.text = $2; }
+         | identifier '=' '<' concatenated_text '>'   { result.variables[$1] = $4; };
 
 text:                                   
          TEXT                                         { $$ = d_scanner.matched(); }
-         | identifier                                 { $$ = variables[$1]; }
+         | identifier                                 { $$ = result.variables[$1]; }
          | '{' element_list '}'                       { $$ = Util::get_random_element(*$2, rng); }
          | '[' concatenated_text ']'                  { $$ = rng->get_uint(0, 1) ? $2 : ""; };
 

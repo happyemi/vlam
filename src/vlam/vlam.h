@@ -22,15 +22,27 @@
 #define VLAM_H_
 
 #include <iosfwd>
+#include <string>
+#include <map>
 
 namespace Vlam
 {
 
-// Parse an input stream and ouput the resulting text into ostream. Use the specified seed to initialize the random engine
-void parse(std::istream& istream, std::ostream& ostream, unsigned int seed);
+using VariablesMap = std::map<std::string, std::string>;
 
-// Parse an input stream and ouput the resulting text into ostream. 
-void parse(std::istream& istream, std::ostream& ostream);
+// Contains the parsing result.
+struct ParseResult
+{
+	VariablesMap variables;
+	unsigned int seed;
+	std::string text;
+};
+
+// Parses an input stream and returns a ParseResult object. Uses the specified seed to initialize the random engine
+ParseResult parse(std::istream& istream, const VariablesMap& variables, unsigned int seed);
+
+// Parses an input stream and returns a ParseResult object. The random seed will be generated based on the current time
+ParseResult parse(std::istream& istream, const VariablesMap& variables);
 
 }
 

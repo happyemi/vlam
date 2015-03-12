@@ -25,20 +25,21 @@
 namespace Vlam
 {
 
-static void parse(std::istream& istream, std::ostream& ostream, Util::RNG::Ptr rng)
+static ParseResult parse(std::istream& istream, const VariablesMap& variables, Util::RNG::Ptr rng)
 {
-	Parser parser(istream, ostream, rng);
+	Parser parser(istream, variables, rng);
 	parser.parse();
+	return parser.get_result();
 }
 
-void parse(std::istream& istream, std::ostream& ostream, unsigned int seed)
+ParseResult parse(std::istream& istream, const VariablesMap& variables, unsigned int seed)
 {
-	parse(istream, ostream, Util::create_RNG(seed));
+	return parse(istream, variables, Util::create_RNG(seed));
 }
 
-void parse(std::istream& istream, std::ostream& ostream)
+ParseResult parse(std::istream& istream, const VariablesMap& variables)
 {
-	parse(istream, ostream, Util::create_RNG());
+	return parse(istream, variables, Util::create_RNG());
 }
 
 }

@@ -26,25 +26,33 @@ BOOST_AUTO_TEST_SUITE(basics)
 BOOST_AUTO_TEST_CASE(test_basic_copy)
 {
 	std::string text = "<This is some basic text>";
-	std::stringstream in(text), target;
-	Vlam::parse(in, target);
-	BOOST_REQUIRE_EQUAL(target.str(), "This is some basic text");
+	std::stringstream in(text);
+	Vlam::ParseResult target = Vlam::parse(in, Vlam::VariablesMap());
+	BOOST_REQUIRE_EQUAL(target.text, "This is some basic text");
 }
 
 BOOST_AUTO_TEST_CASE(test_can_copy_newline)
 {
 	std::string text = "<This is some basic text\nAnd another line>";
-	std::stringstream in(text), target;
-	Vlam::parse(in, target);
-	BOOST_REQUIRE_EQUAL(target.str(), "This is some basic text\nAnd another line");
+	std::stringstream in(text);
+	Vlam::ParseResult target = Vlam::parse(in, Vlam::VariablesMap());
+	BOOST_REQUIRE_EQUAL(target.text, "This is some basic text\nAnd another line");
 }
 
 BOOST_AUTO_TEST_CASE(test_can_copy_empty_text)
 {
 	std::string text = "";
-	std::stringstream in(text), target;
-	Vlam::parse(in, target);
-	BOOST_REQUIRE_EQUAL(target.str(), text);
+	std::stringstream in(text);
+	Vlam::ParseResult target = Vlam::parse(in, Vlam::VariablesMap());
+	BOOST_REQUIRE_EQUAL(target.text, text);
+}
+
+BOOST_AUTO_TEST_CASE(test_result_stores_the_right_seed)
+{
+	std::string text = "<>";
+	std::stringstream in(text);
+	Vlam::ParseResult target = Vlam::parse(in, Vlam::VariablesMap(), 10);
+	BOOST_REQUIRE_EQUAL(target.seed, 10);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

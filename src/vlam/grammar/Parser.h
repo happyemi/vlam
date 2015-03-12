@@ -24,6 +24,7 @@
 #include "Parserbase.h"
 #include "Scanner.h"
 #include <vlam/util/random.h>
+#include <vlam/vlam.h>
 #include <sstream>
 #include <map>
 
@@ -32,16 +33,22 @@ class Parser: public ParserBase
 {
 
 public:
-	Parser(std::istream& istream, std::ostream& ostream, Util::RNG::Ptr rng) : 
-		rng(rng), d_scanner(istream, scanner_output), out(ostream) {}
+	Parser(std::istream& istream, const Vlam::VariablesMap& variables, Util::RNG::Ptr rng) : 
+		rng(rng), d_scanner(istream, scanner_output), result{variables, rng->get_seed()} {}
+
 	int parse();
 
+	Vlam::ParseResult get_result() { return result; }
+
 private:
-	std::map<std::string, std::string> variables;
+	// Passed to the scanner, which requires an output stream, although it should never use it in this instance
 	std::ostringstream scanner_output;
+
 	Util::RNG::Ptr rng;
 	Scanner d_scanner;
-	std::ostream& out;
+
+	// Store parsing result
+	Vlam::ParseResult result;
 
 	void error(char const *msg);    // called on (syntax) errors
 	int lex();                      // returns the next token from the
