@@ -21,6 +21,8 @@
 #include "Parser.h"
 #include <vlam/util/helpers.h>
 
+namespace Vlam
+{
 
 inline void Parser::error(char const *msg)
 {
@@ -40,5 +42,7 @@ inline void Parser::print()
 inline void Parser::exceptionHandler__(std::exception const &exc)         
 {
     throw;              // re-implement to handle exceptions thrown by actions
+}
+
 }
 

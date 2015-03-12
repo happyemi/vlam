@@ -25,11 +25,16 @@
 #include <vector>
 #include "random.h"
 
+namespace Vlam
+{
+
 namespace Util
 {
 
 // Returns a random element of the given vector. If the vector is empty, an empty string is returned
 std::string get_random_element(const std::vector<std::string>& elements, RNG::Ptr rng);
+
+}
 
 }
 

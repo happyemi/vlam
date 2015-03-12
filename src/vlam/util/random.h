@@ -23,6 +23,9 @@
 
 #include <memory>
 
+namespace Vlam
+{
+
 namespace Util
 {
 
@@ -52,6 +55,8 @@ RNG::Ptr create_RNG(unsigned int seed);
 // Returns a concrete implementation of the RNG interface. The current system time will be used as 
 // random seed
 RNG::Ptr create_RNG();
+
+}
 
 }
 

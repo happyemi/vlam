@@ -28,17 +28,20 @@
 #include <sstream>
 #include <map>
 
+namespace Vlam
+{
+
 #undef Parser
 class Parser: public ParserBase
 {
 
 public:
-	Parser(std::istream& istream, const Vlam::VariablesMap& variables, Util::RNG::Ptr rng) : 
+	Parser(std::istream& istream, const VariablesMap& variables, Util::RNG::Ptr rng) : 
 		rng(rng), d_scanner(istream, scanner_output), result{variables, rng->get_seed()} {}
 
 	int parse();
 
-	Vlam::ParseResult get_result() { return result; }
+	ParseResult get_result() { return result; }
 
 private:
 	// Passed to the scanner, which requires an output stream, although it should never use it in this instance
@@ -48,7 +51,7 @@ private:
 	Scanner d_scanner;
 
 	// Store parsing result
-	Vlam::ParseResult result;
+	ParseResult result;
 
 	void error(char const *msg);    // called on (syntax) errors
 	int lex();                      // returns the next token from the
@@ -64,5 +67,6 @@ private:
 	void exceptionHandler__(std::exception const &exc);
 };
 
+}
 
 #endif

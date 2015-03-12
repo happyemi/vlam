@@ -22,6 +22,9 @@
 #include <random>
 #include <chrono>
 
+namespace Vlam
+{
+
 namespace Util
 {
 
@@ -68,6 +71,8 @@ RNG::Ptr create_RNG(unsigned int seed)
 RNG::Ptr create_RNG()
 {
 	return std::make_shared<ConcreteRNG>(std::chrono::system_clock::now().time_since_epoch().count());
+}
+
 }
 
 }

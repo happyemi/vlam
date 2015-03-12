@@ -23,7 +23,7 @@
 
 #include <vlam/util/random.h>
 
-class FakeRNG : public Util::RNG
+class FakeRNG : public Vlam::Util::RNG
 {
 public:
 	using Ptr = std::shared_ptr<FakeRNG>;

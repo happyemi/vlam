@@ -28,8 +28,8 @@ def scanner_emitter(target, source, env):
 	target.append("Scanner.h")
 	return target, source
 
-scanner_builder = Builder(action = 'flexc++ -l ${TARGET.file} ${SOURCE.file}', suffix='.cpp', emitter = scanner_emitter, chdir = 1)
-parser_builder = Builder(action = 'bisonc++ -p ${TARGET.file} ${SOURCE.file}', suffix='.cpp', emitter = parser_emitter, chdir = 1)
+scanner_builder = Builder(action = 'flexc++ --namespace=Vlam -l ${TARGET.file} ${SOURCE.file}', suffix='.cpp', emitter = scanner_emitter, chdir = 1)
+parser_builder = Builder(action = 'bisonc++ --namespace=Vlam -p ${TARGET.file} ${SOURCE.file}', suffix='.cpp', emitter = parser_emitter, chdir = 1)
 env = Environment(BUILDERS = {'Scanner': scanner_builder, 'Parser': parser_builder})
 
 env.Append(CPPFLAGS = ['-Wall', '-g', '-std=c++11'])

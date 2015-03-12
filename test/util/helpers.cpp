@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(test_get_random_element)
 	v.push_back("test string 2");
 
 	fake_rng->value = 1;
-	std::string target = Util::get_random_element(v, fake_rng);
+	std::string target = Vlam::Util::get_random_element(v, fake_rng);
 	BOOST_REQUIRE_EQUAL(target, "test string 2");
 }
 
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(test_get_random_element_empty)
 	std::vector<std::string> v;
 
 	fake_rng->value = 0;
-	std::string target = Util::get_random_element(v, fake_rng);
+	std::string target = Vlam::Util::get_random_element(v, fake_rng);
 	BOOST_REQUIRE_EQUAL(target, "");
 }
 

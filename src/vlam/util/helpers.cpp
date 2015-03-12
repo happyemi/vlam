@@ -20,6 +20,9 @@
 
 #include "helpers.h"
 
+namespace Vlam
+{
+
 namespace Util
 {
 
@@ -28,6 +31,8 @@ std::string get_random_element(const std::vector<std::string>& elements, RNG::Pt
 	if(elements.size() == 0)
 		return "";
 	return elements[rng->get_uint(0, elements.size() - 1)];
+}
+
 }
 
 }
