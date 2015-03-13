@@ -29,7 +29,6 @@
 
 <content>[\[\]{}|]                     return matched()[0];
 <content>\>                            begin(StartCondition__::INITIAL); return matched()[0];
-<*>\$[a-zA-Z0-9]*                      return Parser::IDENTIFIER;
-<content>[\n()a-zA-Z0-9 ,.;:'?!"]*     return Parser::TEXT;
-<content>.
+<*>\$[a-zA-Z0-9]+                      return Parser::IDENTIFIER;
+<content>[^{}\[\]|\$\<\>]*             return Parser::TEXT;
 <<EOF>>                                return 0;
