@@ -24,6 +24,7 @@
 #include <iosfwd>
 #include <string>
 #include <map>
+#include <exception>
 
 namespace Vlam
 {
@@ -36,6 +37,17 @@ struct ParseResult
 	VariablesMap variables;
 	unsigned int seed;
 	std::string text;
+};
+
+class ParseError : public std::exception
+{
+public:
+	ParseError(int line_no);
+	const char* what() const noexcept override { return msg.c_str(); }
+
+private:
+	int line_no;
+	std::string msg;
 };
 
 // Parses an input stream and returns a ParseResult object. Uses the specified seed to initialize the random engine

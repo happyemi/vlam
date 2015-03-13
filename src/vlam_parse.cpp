@@ -23,7 +23,14 @@
 
 int main()
 {
-	Vlam::ParseResult result = Vlam::parse(std::cin, Vlam::VariablesMap());
-	std::cout << result.text;
+	try
+	{
+		Vlam::ParseResult result = Vlam::parse(std::cin, Vlam::VariablesMap());
+		std::cout << result.text;
+	}
+	catch(std::exception& e)
+	{
+		std::cerr << e.what();
+	}
 }
 

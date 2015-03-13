@@ -42,4 +42,11 @@ ParseResult parse(std::istream& istream, const VariablesMap& variables)
 	return parse(istream, variables, Util::create_RNG());
 }
 
+ParseError::ParseError(int line_no) : line_no(line_no)
+{
+	std::stringstream ss;
+	ss << "Parsing error on line " << line_no << std::endl;
+	msg = ss.str();
+}
+
 }

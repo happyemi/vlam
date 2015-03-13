@@ -55,4 +55,20 @@ BOOST_AUTO_TEST_CASE(test_result_stores_the_right_seed)
 	BOOST_REQUIRE_EQUAL(target.seed, 10);
 }
 
+BOOST_AUTO_TEST_CASE(test_can_throw_exception)
+{
+	std::string text = "<{>";
+	std::stringstream in(text);
+	bool catched = false;
+	try
+	{
+		Vlam::ParseResult target = Vlam::parse(in, Vlam::VariablesMap(), 10);
+	}
+	catch(Vlam::ParseError& e)
+	{
+		catched = true;
+	}
+	BOOST_REQUIRE_EQUAL(catched, true);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

@@ -24,9 +24,9 @@
 namespace Vlam
 {
 
-inline void Parser::error(char const *msg)
+inline void Parser::error(char const*)
 {
-    std::cerr << msg << '\n';
+	throw ParseError(d_scanner.lineNr());
 }
 
 inline int Parser::lex()
