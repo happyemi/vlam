@@ -1,0 +1,9 @@
+*.o
+.sconsign.dblite
+*.a
+src/vlam/grammar/*.cpp
+src/vlam/grammar/*.h
+!src/vlam/grammar/Parser.h
+install/*
+src/vlam_parse
+test/vlam-test
