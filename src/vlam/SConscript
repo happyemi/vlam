@@ -19,10 +19,11 @@ import os
 
 Import('env')
 
-grammar = SConscript(os.path.join('grammar', 'SConscript'), exports = 'env')
-
+scanner = env.CXXFile(target = 'grammar/scanner.cpp', source = 'grammar/scanner.ll')
+parser = env.CXXFile(target = 'grammar/parser.cpp', source = 'grammar/parser.yy', YACCFLAGS='-d')
 files = Glob('*.cpp') + Glob('util/*.cpp')
-libvlam = env.Library('libvlam', files + grammar)
+
+libvlam = env.Library('libvlam', files + [scanner] + [parser[0]])
 
 Alias('libvlam', libvlam)
 

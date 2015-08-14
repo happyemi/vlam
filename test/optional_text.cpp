@@ -19,7 +19,7 @@
  */
 
 #include <vlam/vlam.h>
-#include <vlam/grammar/Parser.h>
+#include <vlam/grammar/parser.h>
 #include <boost/test/unit_test.hpp>
 #include "test_utils.h"
 
@@ -42,25 +42,21 @@ BOOST_AUTO_TEST_CASE(test_empty_text)
 	BOOST_REQUIRE_EQUAL(target.text, "");
 }
 
-BOOST_AUTO_TEST_CASE(test_test_is_not_selected)
+BOOST_AUTO_TEST_CASE(test_text_is_not_selected)
 {
 	std::string text = "<[test]>";
 	std::stringstream in(text);
 	fake_rng->value = 0;
-	Vlam::Parser parser(in, Vlam::VariablesMap(), fake_rng);
-	parser.parse();
-	Vlam::ParseResult target = parser.get_result();
+	Vlam::ParseResult target = Vlam::parse(in, Vlam::VariablesMap(), fake_rng);
 	BOOST_REQUIRE_EQUAL(target.text, "");
 }
 
-BOOST_AUTO_TEST_CASE(test_test_is_selected)
+BOOST_AUTO_TEST_CASE(test_text_is_selected)
 {
 	std::string text = "<[test]>";
 	std::stringstream in(text);
 	fake_rng->value = 1;
-	Vlam::Parser parser(in, Vlam::VariablesMap(), fake_rng);
-	parser.parse();
-	Vlam::ParseResult target = parser.get_result();
+	Vlam::ParseResult target = Vlam::parse(in, Vlam::VariablesMap(), fake_rng);
 	BOOST_REQUIRE_EQUAL(target.text, "test");
 }
 
@@ -69,9 +65,7 @@ BOOST_AUTO_TEST_CASE(test_can_nest_random_lists)
 	std::string text = "<[Test {a|b}]>";
 	std::stringstream in(text);
 	fake_rng->value = 1;
-	Vlam::Parser parser(in, Vlam::VariablesMap(), fake_rng);
-	parser.parse();
-	Vlam::ParseResult target = parser.get_result();
+	Vlam::ParseResult target = Vlam::parse(in, Vlam::VariablesMap(), fake_rng);
 	BOOST_REQUIRE_EQUAL(target.text, "Test b");
 }
 

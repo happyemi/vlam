@@ -3,6 +3,8 @@ VLAM stands for "Very Large Array of Monkeys". It's a library that can be used t
 
 VLAM is supposed to be a library, but it also comes with a command line tool, called `vlam_parse` that can be used to have some fun from the command line. It reads text from the standard input until EOF is reached, and writes to the standard output.
 
+Please note that the parser is NOT reentrant: if multiple threads call Vlam::parse(...), the result is undefined (it will probably crash though_.
+
 ### Manual (sort of)
 
 1. The syntax of the input file is:
@@ -79,10 +81,10 @@ VLAM is supposed to be a library, but it also comes with a command line tool, ca
 
   Note that all _Optional Text_ and _Random Lists_ that appear in a variable definition are only generated once and their value is reused every time the variable is referred
 
-6. Parsing error reporting is _very_ limited: `Vlam::parse` will throw an exception when a syntax error is detected, but will only report the offending line number. Good luck finding that pair of unmatched parenthesis...
+6. Parsing error reporting is _very_ limited: `Vlam::parse` will throw an exception when a syntax error is detected, but will only report a generic (and cryptic) error message. Good luck finding that pair of unmatched parenthesis...
 
 ### Building
-Building the commandline program requires flexc++ and bisonc++ installed. Building tests requires libboost-test.
+Building the library requires flex and bison installed and it makes use of boost::any. Building tests requires libboost-test.
 
 1. `scons vlam_parse` or just `scons` builds the main command line executable. Run with `src/vlam_parse`. It reads data from the standard input.
 

@@ -19,7 +19,7 @@
  */
 
 #include <vlam/vlam.h>
-#include <vlam/grammar/Parser.h>
+#include <vlam/grammar/parser.h>
 #include <boost/test/unit_test.hpp>
 #include "test_utils.h"
 

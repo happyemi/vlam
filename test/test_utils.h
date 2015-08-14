@@ -22,6 +22,7 @@
 #define TEST_UTILS_H_
 
 #include <vlam/util/random.h>
+#include <vlam/vlam.h>
 
 class FakeRNG : public Vlam::Util::RNG
 {
@@ -34,6 +35,13 @@ public:
 	unsigned int get_uint(unsigned int min, unsigned int max) override { return value; }
 	unsigned int get_seed() const override { return 0; }
 };
+
+namespace Vlam
+{
+
+extern ParseResult parse(std::istream& istream, const VariablesMap& variables, Util::RNG::Ptr rng);
+
+}
 
 #endif
 

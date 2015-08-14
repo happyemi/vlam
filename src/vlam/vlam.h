@@ -39,14 +39,13 @@ struct ParseResult
 	std::string text;
 };
 
-class ParseError : public std::exception
+class ParseError final: public std::exception
 {
 public:
-	ParseError(int line_no);
+	ParseError(const std::string& message);
 	const char* what() const noexcept override { return msg.c_str(); }
 
 private:
-	int line_no;
 	std::string msg;
 };
 

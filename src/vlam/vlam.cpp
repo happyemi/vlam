@@ -19,17 +19,72 @@
  */
 
 #include "vlam.h"
-#include <vlam/grammar/Parser.h>
+#include <vlam/grammar/parser.h>
 #include <vlam/util/random.h>
+#include <istream>
+
+// Global variables and definitions shared between this file, the parser and the lexer
+// Hopefully everything can be cleaned up when switching to a reentrant parser
+namespace
+{
+std::istream* input_stream; // The current input stream
+const int max_buffer = 4096; 
+char data[max_buffer];      // buffer used to feed data to the lexer
+}
 
 namespace Vlam
 {
 
-static ParseResult parse(std::istream& istream, const VariablesMap& variables, Util::RNG::Ptr rng)
+// Used by the parser, these three variables hold data about current parsing execution
+ParseResult current_result;
+Util::RNG::Ptr current_rng;
+std::string error_msg;
+
+// Invoked by the lexer to fetch more data
+void fetch_bytes(char*& buffer, int& bytes_read)
 {
-	Parser parser(istream, variables, rng);
-	parser.parse();
-	return parser.get_result();
+	buffer = data;
+	input_stream->read(buffer, max_buffer - 2);
+	bytes_read = input_stream->gcount();
+	buffer[bytes_read] = 0;
+}
+
+}
+
+// Used to initialize/invoke/get info from the lexer
+extern void yylex_destroy();
+extern "C" int yywrap();
+	
+
+namespace Vlam
+{
+
+ParseResult parse(std::istream& istream, const VariablesMap& variables, Util::RNG::Ptr rng)
+{
+	// Initialize global variables
+	input_stream = &istream;
+	current_result = ParseResult();
+	current_result.variables = variables;
+	current_rng = rng;
+	current_result.seed = rng->get_seed();
+	int parsing_result = 0;
+
+	// Initialize the lexer and start parsing
+	if(yywrap() == 0)
+	{
+		parsing_result = yyparse();
+	}
+
+	// Clean up lexer data
+	yylex_destroy();
+
+	// Throw an error if necessary
+	if(parsing_result != 0)
+	{
+		throw ParseError(error_msg);
+	}
+
+	return current_result;
 }
 
 ParseResult parse(std::istream& istream, const VariablesMap& variables, unsigned int seed)
@@ -42,11 +97,8 @@ ParseResult parse(std::istream& istream, const VariablesMap& variables)
 	return parse(istream, variables, Util::create_RNG());
 }
 
-ParseError::ParseError(int line_no) : line_no(line_no)
+ParseError::ParseError(const std::string& message) : msg(message)
 {
-	std::stringstream ss;
-	ss << "Parsing error on line " << line_no << std::endl;
-	msg = ss.str();
 }
 
 }

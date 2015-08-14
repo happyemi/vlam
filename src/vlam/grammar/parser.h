@@ -18,31 +18,11 @@
  *
  */
 
-#include "Parser.h"
-#include <vlam/util/helpers.h>
+#ifndef VLAM_PARSER_H_
+#define VLAM_PARSER_H_
 
-namespace Vlam
-{
+#include <boost/any.hpp>
+#include "parser.hpp"
 
-inline void Parser::error(char const*)
-{
-	throw ParseError(d_scanner.lineNr());
-}
-
-inline int Parser::lex()
-{
-    return d_scanner.lex();
-}
-
-inline void Parser::print()         
-{
-    print__();           // displays tokens if --print was specified
-}
-
-inline void Parser::exceptionHandler__(std::exception const &exc)         
-{
-    throw;              // re-implement to handle exceptions thrown by actions
-}
-
-}
+#endif
 
